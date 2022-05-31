@@ -69,7 +69,7 @@
 	
 		const d = new Date( data.items[0].update_timestamp);
 		
-		document.getElementById("timestamp").innerHTML = "Last Updated:" + moment(d).format('D MMMM YYYY, hh:mm'); // June 1, 2019
+		document.getElementById("timestamp").innerHTML = "Last Updated:" + moment(d).format('D MMMM YYYY, hh:mm'); // 31 May 2022, 1:36
 		for (const [key,value] of Object.entries(data.items[0].readings))
 		{
 			
