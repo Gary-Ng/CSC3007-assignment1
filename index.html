@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
+
+<head>
+  <style>
+
+    table {
+      background-color:darksalmon;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color:gray;
+    }
+
+    th {
+      background-color: black;
+      color: yellow;
+    }
+	
+	#timestamp {
+	  font-family:Arial, Helvetica, sans-serif;
+	  display: block;
+	  text-align: center;
+	}
+	
+  </style>
+</head>
+
+<body>
+
+  <h2 style = "background: powderblue; color: black; text-align: center;"  >Singapore PSI value Table</h2>
+  <div class="main-body" ">
+    <span id = "timestamp"></span>
+	<table>
+      <thread>
+        <tr>
+          <th>Metric</th>
+          <th>National</th>
+          <th>Central</th>
+          <th>West</th>
+          <th>East</th>
+          <th>North</th>
+		  <th>South</th>
+        </tr>
+      </thread>
+      <tbody id="table-body" class="display tbody"></tbody>
+    </table>
+  </div>
+
+</body>
+
+<script>
+  $(document).ready(function() {
+    var table = $("#table-body");
+	table.empty();
+    $.ajax({
+        url: 'https://api.data.gov.sg/v1/environment/psi', method: "GET", dataType: "json", success: function(data) {
+	
+		const d = new Date( data.items[0].update_timestamp);
+		
+		document.getElementById("timestamp").innerHTML = "Last Updated:" + moment(d).format('d MMMM YYYY, hh:mm'); // June 1, 2019
+		for (const [key,value] of Object.entries(data.items[0].readings))
+		{
+			
+			table.append(
+			
+			"<tr><td>" + key + "</td>" +
+			"<td>" + value.national + "</td>" + 
+			"<td>" + value.central + "</td>" +
+			"<td>" + value.west + "</td>" +
+			"<td>" + value.east + "</td>" +
+			"<td>" + value.north + "</td>" +
+			"<td>" + value.south + "</td>" );
+		}
+      }
+    });
+  });
+</script>
+
+</html>
